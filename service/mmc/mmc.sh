@@ -31,7 +31,7 @@ if [ ! -e /etc/mmc/docker_bootstrapped ]; then
   fi
 
   # MMC config
-  sed -i -e "s/url = https://127.0.0.1:7080/url = https://$LDAP_HOST:7080/" /etc/mmc/mmc.ini
+  sed -i -e "s?url = https://127.0.0.1:7080?url = https://$LDAP_HOST:7080?" /etc/mmc/mmc.ini
   sed -i -e "s/login = mmc/login = $MMC_AGENT_LOGIN/" /etc/mmc/mmc.ini
   sed -i -e "s/password = s3cr3t/password = $MMC_AGENT_PASSWORD/" /etc/mmc/mmc.ini
 
