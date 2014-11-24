@@ -1,4 +1,4 @@
-FROM osixia/baseimage:0.9.1
+FROM osixia/baseimage:0.10.0
 MAINTAINER Bertrand Gouny <bertrand.gouny@osixia.net>
 
 # From Nick Stenning's work
@@ -11,6 +11,9 @@ ENV MMC_AGENT_PASSWORD passw0rd
 
 # Disable SSH
 # RUN rm -rf /etc/service/sshd /etc/my_init.d/00_regen_ssh_host_keys.sh
+
+# Enable dnsmasq
+RUN /sbin/enable-service ca-authority
 
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]

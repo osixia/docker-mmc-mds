@@ -17,7 +17,7 @@ if [ ! -e /etc/mmc/docker_bootstrapped ]; then
   a2ensite mmc
 
   # Create apache ssl certificate
-  /sbin/create-ssl-cert mmc /etc/ssl/certs/mmc-ssl-cert.pem /etc/ssl/private/mmc-ssl-cert.key
+  /sbin/ssl-create-cert mmc /etc/ssl/certs/mmc-ssl-cert.pem /etc/ssl/private/mmc-ssl-cert.key
 
   # a ldap container is linked to this phpLDAPadmin container
   if [ -n "${LDAP_NAME}" ]; then
