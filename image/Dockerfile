@@ -17,7 +17,8 @@ RUN apt-get -y update && /sbin/enable-service apache2 php5-fpm ssl-kit \
 	mmc-web-base \
 	mmc-web-dashboard \
 	mmc-web-ppolicy \
-	mmc-web-mail
+	mmc-web-mail \
+	mmc-web-sshlpk
 
 # Add install script and mmc-web assets
 ADD service/install.sh /tmp/install.sh
