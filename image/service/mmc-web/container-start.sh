@@ -9,11 +9,11 @@ if [ ! -e "$FIRST_START_DONE" ]; then
   if [ "${HTTPS,,}" == "true" ]; then
 
     # check certificat and key or create it
-    /sbin/ssl-kit "/osixia/mmc-web/apache2/ssl/$SSL_CRT_FILENAME" "/osixia/mmc-web/apache2/ssl/$SSL_KEY_FILENAME"
+    /sbin/ssl-helper "/osixia/service/mmc-web/assets/apache2/ssl/$SSL_CRT_FILENAME" "/osixia/service/mmc-web/assets/apache2/ssl/$SSL_KEY_FILENAME"
 
     # add CA certificat config if CA cert exists
-    if [ -e "/osixia/mmc-web/apache2/ssl/$SSL_CA_CRT_FILENAME" ]; then
-      sed -i "s/#SSLCACertificateFile/SSLCACertificateFile/g" /osixia/mmc-web/apache2/mmc-ssl.conf
+    if [ -e "/osixia/service/mmc-web/assets/apache2/ssl/$SSL_CA_CRT_FILENAME" ]; then
+      sed -i "s/#SSLCACertificateFile/SSLCACertificateFile/g" /osixia/service/mmc-web/assets/apache2/mmc-ssl.conf
     fi
 
     a2ensite mmc-ssl
@@ -32,7 +32,7 @@ if [ ! -e "$FIRST_START_DONE" ]; then
   sed -i '/.*\[server_01\].*/,$d' /etc/mmc/mmc.ini
 
 
-  server_config() { 
+  server_config() {
 
     local infos=(${!1})
 
@@ -49,6 +49,18 @@ if [ ! -e "$FIRST_START_DONE" ]; then
     local key=${!info_key_value[0]}
     local value=${!info_key_value[1]}
 
+    if [ "$key" = "localcert" ] && [ ! -e "$value" ]; then
+      /sbin/ssl-helper "/osixia/service/mmc-web/assets/ssl/mmc-agent-client.tmp.crt" "/osixia/service/mmc-web/assets/ssl/mmc-agent-client.tmp.key" --ca-crt=/osixia/service/mmc-web/assets/ssl/mmc-agent-ca.crt
+
+      # mmc agent need a pem file with the crt and the key
+      cat /osixia/service/mmc-web/assets/ssl/mmc-agent-client.tmp.crt /osixia/service/mmc-web/assets/ssl/mmc-agent-client.tmp.key > /osixia/service/mmc-web/assets/ssl/mmc-agent-client.pem
+      value="/osixia/service/mmc-web/assets/ssl/mmc-agent-client.pem"
+    fi
+
+    if [ "$key" = "cacert" ] && [ ! -e "$value" ]; then
+      value="/osixia/service/mmc-web/assets/ssl/mmc-agent-ca.crt"
+    fi
+
     echo "$key = $value" >> /etc/mmc/mmc.ini
   }
 
@@ -56,7 +68,7 @@ if [ ! -e "$FIRST_START_DONE" ]; then
   i=1
   for server in "${SERVERS[@]}"
   do
-    
+
     #section var contain a variable name, we access to the variable value and cast it to a table
     infos=(${!server})
 
