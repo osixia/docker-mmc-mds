@@ -9,7 +9,7 @@ if [ ! -e "$FIRST_START_DONE" ]; then
   if [ "${HTTPS,,}" == "true" ]; then
 
     # check certificat and key or create it
-    /sbin/ssl-helper "/osixia/service/mmc-web/assets/apache2/ssl/$SSL_CRT_FILENAME" "/osixia/service/mmc-web/assets/apache2/ssl/$SSL_KEY_FILENAME"
+    /sbin/ssl-helper "/osixia/service/mmc-web/assets/apache2/ssl/$SSL_CRT_FILENAME" "/osixia/service/mmc-web/assets/apache2/ssl/$SSL_KEY_FILENAME" --ca-crt=/osixia/service/mmc-web/assets/apache2/ssl/$SSL_CA_CRT_FILENAME
 
     # add CA certificat config if CA cert exists
     if [ -e "/osixia/service/mmc-web/assets/apache2/ssl/$SSL_CA_CRT_FILENAME" ]; then
