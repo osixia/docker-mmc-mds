@@ -5,12 +5,12 @@ MAINTAINER Bertrand Gouny <bertrand.gouny@osixia.net>
 CMD ["/osixia/tool/run"]
 
 # Install apache2 and php5-fpm using osixia/baseimage utils
-# Caution: /sbin/install-service-available arguments order is important
+# Caution: /sbin/add-service-available arguments order is important
 # php5-fpm install will detect apache2 and configure it
 
 # Install mmc-web
-RUN apt-get -y update && /sbin/install-multiple-process-stack \
-	&& /sbin/install-service-available apache2 php5-fpm ssl-helper-openssl \
+RUN apt-get -y update && /sbin/add-multiple-process-stack \
+	&& /sbin/add-service-available apache2 php5-fpm ssl-helper-openssl \
 	&& LC_ALL=C DEBIAN_FRONTEND=noninteractive apt-get install -y --force-yes --no-install-recommends \
 	libapache2-mod-php5 \
 	php5-xmlrpc \
