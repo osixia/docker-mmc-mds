@@ -9,10 +9,10 @@ if [ ! -e "$FIRST_START_DONE" ]; then
   if [ "${HTTPS,,}" == "true" ]; then
 
     # check certificat and key or create it
-    /sbin/ssl-helper "/container/service/mmc-web/assets/apache2/ssl/$SSL_CRT_FILENAME" "/container/service/mmc-web/assets/apache2/ssl/$SSL_KEY_FILENAME" --ca-crt=/container/service/mmc-web/assets/apache2/ssl/$SSL_CA_CRT_FILENAME
+    /sbin/ssl-helper "/container/service/mmc-web/assets/apache2/certs/$HTTPS_CRT_FILENAME" "/container/service/mmc-web/assets/apache2/certs/$HTTPS_KEY_FILENAME" --ca-crt=/container/service/mmc-web/assets/apache2/certs/$HTTPS_CA_CRT_FILENAME
 
     # add CA certificat config if CA cert exists
-    if [ -e "/container/service/mmc-web/assets/apache2/ssl/$SSL_CA_CRT_FILENAME" ]; then
+    if [ -e "/container/service/mmc-web/assets/apache2/certs/$HTTPS_CA_CRT_FILENAME" ]; then
       sed -i "s/#SSLCACertificateFile/SSLCACertificateFile/g" /container/service/mmc-web/assets/apache2/mmc-ssl.conf
     fi
 
@@ -50,15 +50,15 @@ if [ ! -e "$FIRST_START_DONE" ]; then
     local value=${!info_key_value[1]}
 
     if [ "$key" = "localcert" ] && [ ! -e "$value" ]; then
-      /sbin/ssl-helper "/container/service/mmc-web/assets/ssl/mmc-agent-client.tmp.crt" "/container/service/mmc-web/assets/ssl/mmc-agent-client.tmp.key" --ca-crt=/container/service/mmc-web/assets/ssl/mmc-agent-ca.crt
+      /sbin/ssl-helper "/container/service/mmc-web/assets/mmc-client/certs/mmc-agent-client.tmp.crt" "/container/service/mmc-web/assets/mmc-client/certs/mmc-agent-client.tmp.key" --ca-crt=/container/service/mmc-web/assets/mmc-client/certs/mmc-agent-ca.crt
 
       # mmc agent need a pem file with the crt and the key
-      cat /container/service/mmc-web/assets/ssl/mmc-agent-client.tmp.crt /container/service/mmc-web/assets/ssl/mmc-agent-client.tmp.key > /container/service/mmc-web/assets/ssl/mmc-agent-client.pem
-      value="/container/service/mmc-web/assets/ssl/mmc-agent-client.pem"
+      cat /container/service/mmc-web/assets/mmc-client/certs/mmc-agent-client.tmp.crt /container/service/mmc-web/assets/mmc-client/certs/mmc-agent-client.tmp.key > /container/service/mmc-web/assets/mmc-client/certs/mmc-agent-client.pem
+      value="/container/service/mmc-web/assets/mmc-client/certs/mmc-agent-client.pem"
     fi
 
     if [ "$key" = "cacert" ] && [ ! -e "$value" ]; then
-      value="/container/service/mmc-web/assets/ssl/mmc-agent-ca.crt"
+      value="/container/service/mmc-web/assets/mmc-client/certs/mmc-agent-ca.crt"
     fi
 
     echo "$key = $value" >> /etc/mmc/mmc.ini
