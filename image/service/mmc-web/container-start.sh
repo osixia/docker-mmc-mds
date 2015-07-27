@@ -6,13 +6,13 @@ FIRST_START_DONE="/etc/docker-mmc-web-first-start-done"
 if [ ! -e "$FIRST_START_DONE" ]; then
 
   # create mmc-web vhost
-  if [ "${HTTPS,,}" == "true" ]; then
+  if [ "${MMC_WEB_HTTPS,,}" == "true" ]; then
 
     # check certificat and key or create it
-    /sbin/ssl-helper "/container/service/mmc-web/assets/apache2/certs/$HTTPS_CRT_FILENAME" "/container/service/mmc-web/assets/apache2/certs/$HTTPS_KEY_FILENAME" --ca-crt=/container/service/mmc-web/assets/apache2/certs/$HTTPS_CA_CRT_FILENAME
+    /sbin/ssl-helper "/container/service/mmc-web/assets/apache2/certs/$MMC_WEB_HTTPS_CRT_FILENAME" "/container/service/mmc-web/assets/apache2/certs/$MMC_WEB_HTTPS_KEY_FILENAME" --ca-crt=/container/service/mmc-web/assets/apache2/certs/$MMC_WEB_HTTPS_CA_CRT_FILENAME
 
     # add CA certificat config if CA cert exists
-    if [ -e "/container/service/mmc-web/assets/apache2/certs/$HTTPS_CA_CRT_FILENAME" ]; then
+    if [ -e "/container/service/mmc-web/assets/apache2/certs/$MMC_WEB_HTTPS_CA_CRT_FILENAME" ]; then
       sed -i "s/#SSLCACertificateFile/SSLCACertificateFile/g" /container/service/mmc-web/assets/apache2/mmc-ssl.conf
     fi
 
@@ -23,8 +23,8 @@ if [ ! -e "$FIRST_START_DONE" ]; then
   fi
 
   # set mmc-agent login and password
-  sed -i -e "s/#*\s*login\s*=.*/login = $MMC_AGENT_LOGIN/" /etc/mmc/mmc.ini
-  sed -i -e "s/#*\s*password\s*=.*/password = $MMC_AGENT_PASSWORD/" /etc/mmc/mmc.ini
+  sed -i -e "s/#*\s*login\s*=.*/login = $MMC_WEB_MMC_AGENT_LOGIN/" /etc/mmc/mmc.ini
+  sed -i -e "s/#*\s*password\s*=.*/password = $MMC_WEB_MMC_AGENT_PASSWORD/" /etc/mmc/mmc.ini
 
 
   # config servers
@@ -64,7 +64,7 @@ if [ ! -e "$FIRST_START_DONE" ]; then
     echo "$key = $value" >> /etc/mmc/mmc.ini
   }
 
-  SERVERS=($MMC_AGENT_SERVERS)
+  SERVERS=($MMC_WEB_MMC_AGENT_HOSTS)
   i=1
   for server in "${SERVERS[@]}"
   do
