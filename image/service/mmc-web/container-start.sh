@@ -27,7 +27,7 @@ if [ ! -e "$FIRST_START_DONE" ]; then
   sed -i -e "s/#*\s*password\s*=.*/password = $MMC_WEB_MMC_AGENT_PASSWORD/" /etc/mmc/mmc.ini
 
 
-  # config servers
+  # Config servers
   # delete default server config
   sed -i '/.*\[server_01\].*/,$d' /etc/mmc/mmc.ini
 
@@ -69,7 +69,7 @@ if [ ! -e "$FIRST_START_DONE" ]; then
   for server in "${SERVERS[@]}"
   do
 
-    #section var contain a variable name, we access to the variable value and cast it to a table
+    # section var contain a variable name, we access to the variable value and cast it to a table
     infos=(${!server})
 
     # it's a table of infos
