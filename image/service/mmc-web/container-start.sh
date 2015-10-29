@@ -50,15 +50,15 @@ if [ ! -e "$FIRST_START_DONE" ]; then
     local value=${!info_key_value[1]}
 
     if [ "$key" = "localcert" ] && [ ! -e "$value" ]; then
-      /sbin/ssl-helper "/container/service/mmc-web/assets/mmc-client/certs/mmc-agent-client.tmp.crt" "/container/service/mmc-web/assets/mmc-client/certs/mmc-agent-client.tmp.key" --ca-crt=/container/service/mmc-web/assets/mmc-client/certs/mmc-agent-ca.crt
+      /sbin/ssl-helper "/container/service/mmc-agent-client/assets/certs/mmc-agent-client.tmp.crt" "/container/service/mmc-agent-client/assets/certs/mmc-agent-client.tmp.key" --ca-crt=/container/service/mmc-agent-client/assets/certs/mmc-agent-ca.crt
 
       # mmc agent need a pem file with the crt and the key
-      cat /container/service/mmc-web/assets/mmc-client/certs/mmc-agent-client.tmp.crt /container/service/mmc-web/assets/mmc-client/certs/mmc-agent-client.tmp.key > /container/service/mmc-web/assets/mmc-client/certs/mmc-agent-client.pem
-      value="/container/service/mmc-web/assets/mmc-client/certs/mmc-agent-client.pem"
+      cat /container/service/mmc-agent-client/assets/certs/mmc-agent-client.tmp.crt /container/service/mmc-agent-client/assets/certs/mmc-agent-client.tmp.key > /container/service/mmc-agent-client/assets/certs/mmc-agent-client.pem
+      value="/container/service/mmc-agent-client/assets/certs/mmc-agent-client.pem"
     fi
 
     if [ "$key" = "cacert" ] && [ ! -e "$value" ]; then
-      value="/container/service/mmc-web/assets/mmc-client/certs/mmc-agent-ca.crt"
+      value="/container/service/mmc-agent-client/assets/certs/mmc-agent-ca.crt"
     fi
 
     echo "$key = $value" >> /etc/mmc/mmc.ini
