@@ -6,14 +6,14 @@ FIRST_START_DONE="/etc/docker-mmc-web-first-start-done"
 if [ ! -e "$FIRST_START_DONE" ]; then
 
   # create mmc-web vhost
-  if [ "${HTTPS,,}" == "true" ]; then
+  if [ "${MMC_WEB_HTTPS,,}" == "true" ]; then
 
     # check certificat and key or create it
-    /sbin/ssl-kit "/osixia/mmc-web/apache2/ssl/$SSL_CRT_FILENAME" "/osixia/mmc-web/apache2/ssl/$SSL_KEY_FILENAME"
+    /sbin/ssl-helper "/container/service/mmc-web/assets/apache2/certs/$MMC_WEB_HTTPS_CRT_FILENAME" "/container/service/mmc-web/assets/apache2/certs/$MMC_WEB_HTTPS_KEY_FILENAME" --ca-crt=/container/service/mmc-web/assets/apache2/certs/$MMC_WEB_HTTPS_CA_CRT_FILENAME
 
     # add CA certificat config if CA cert exists
-    if [ -e "/osixia/mmc-web/apache2/ssl/$SSL_CA_CRT_FILENAME" ]; then
-      sed -i "s/#SSLCACertificateFile/SSLCACertificateFile/g" /osixia/mmc-web/apache2/mmc-ssl.conf
+    if [ -e "/container/service/mmc-web/assets/apache2/certs/$MMC_WEB_HTTPS_CA_CRT_FILENAME" ]; then
+      sed -i "s/#SSLCACertificateFile/SSLCACertificateFile/g" /container/service/mmc-web/assets/apache2/mmc-ssl.conf
     fi
 
     a2ensite mmc-ssl
@@ -23,16 +23,16 @@ if [ ! -e "$FIRST_START_DONE" ]; then
   fi
 
   # set mmc-agent login and password
-  sed -i -e "s/#*\s*login\s*=.*/login = $MMC_AGENT_LOGIN/" /etc/mmc/mmc.ini
-  sed -i -e "s/#*\s*password\s*=.*/password = $MMC_AGENT_PASSWORD/" /etc/mmc/mmc.ini
+  sed -i -e "s/#*\s*login\s*=.*/login = $MMC_WEB_MMC_AGENT_LOGIN/" /etc/mmc/mmc.ini
+  sed -i -e "s/#*\s*password\s*=.*/password = $MMC_WEB_MMC_AGENT_PASSWORD/" /etc/mmc/mmc.ini
 
 
-  # config servers
+  # Config servers
   # delete default server config
   sed -i '/.*\[server_01\].*/,$d' /etc/mmc/mmc.ini
 
 
-  server_config() { 
+  server_config() {
 
     local infos=(${!1})
 
@@ -49,15 +49,27 @@ if [ ! -e "$FIRST_START_DONE" ]; then
     local key=${!info_key_value[0]}
     local value=${!info_key_value[1]}
 
+    if [ "$key" = "localcert" ] && [ ! -e "$value" ]; then
+      /sbin/ssl-helper "/container/service/mmc-agent-client/assets/certs/mmc-agent-client.tmp.crt" "/container/service/mmc-agent-client/assets/certs/mmc-agent-client.tmp.key" --ca-crt=/container/service/mmc-agent-client/assets/certs/mmc-agent-ca.crt
+
+      # mmc agent need a pem file with the crt and the key
+      cat /container/service/mmc-agent-client/assets/certs/mmc-agent-client.tmp.crt /container/service/mmc-agent-client/assets/certs/mmc-agent-client.tmp.key > /container/service/mmc-agent-client/assets/certs/mmc-agent-client.pem
+      value="/container/service/mmc-agent-client/assets/certs/mmc-agent-client.pem"
+    fi
+
+    if [ "$key" = "cacert" ] && [ ! -e "$value" ]; then
+      value="/container/service/mmc-agent-client/assets/certs/mmc-agent-ca.crt"
+    fi
+
     echo "$key = $value" >> /etc/mmc/mmc.ini
   }
 
-  SERVERS=($MMC_AGENT_SERVERS)
+  SERVERS=($MMC_WEB_MMC_AGENT_HOSTS)
   i=1
   for server in "${SERVERS[@]}"
   do
-    
-    #section var contain a variable name, we access to the variable value and cast it to a table
+
+    # section var contain a variable name, we access to the variable value and cast it to a table
     infos=(${!server})
 
     # it's a table of infos
@@ -72,13 +84,12 @@ if [ ! -e "$FIRST_START_DONE" ]; then
     ((i++))
   done
 
-
-  # Fix file permission
-  chmod 400 /etc/mmc/mmc.ini
-  chown www-data:www-data /etc/mmc/mmc.ini
-  chown www-data:www-data -R /usr/share/mmc
-
   touch $FIRST_START_DONE
 fi
+
+# Fix file permission
+chmod 400 /etc/mmc/mmc.ini
+chown www-data:www-data /etc/mmc/mmc.ini
+chown www-data:www-data -R /usr/share/mmc
 
 exit 0
