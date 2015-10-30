@@ -1,4 +1,4 @@
-FROM osixia/web-baseimage:0.1.1
+FROM osixia/web-baseimage:0.1.3
 MAINTAINER Bertrand Gouny <bertrand.gouny@osixia.net>
 
 # Use baseimage's init system.
