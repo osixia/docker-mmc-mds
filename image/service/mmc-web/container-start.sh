@@ -84,13 +84,12 @@ if [ ! -e "$FIRST_START_DONE" ]; then
     ((i++))
   done
 
-
-  # Fix file permission
-  chmod 400 /etc/mmc/mmc.ini
-  chown www-data:www-data /etc/mmc/mmc.ini
-  chown www-data:www-data -R /usr/share/mmc
-
   touch $FIRST_START_DONE
 fi
+
+# Fix file permission
+chmod 400 /etc/mmc/mmc.ini
+chown www-data:www-data /etc/mmc/mmc.ini
+chown www-data:www-data -R /usr/share/mmc
 
 exit 0
