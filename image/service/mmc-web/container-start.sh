@@ -23,9 +23,11 @@ if [ ! -e "$FIRST_START_DONE" ]; then
   fi
 
   # set mmc-agent login and password
-  sed -i -e "s/#*\s*login\s*=.*/login = $MMC_WEB_MMC_AGENT_LOGIN/" /etc/mmc/mmc.ini
-  sed -i -e "s/#*\s*password\s*=.*/password = $MMC_WEB_MMC_AGENT_PASSWORD/" /etc/mmc/mmc.ini
+  sed -i -e "s|#*\s*login\s*=.*|login = \"${MMC_WEB_MMC_AGENT_LOGIN}\"|" /etc/mmc/mmc.ini
+  sed -i -e "s|#*\s*password\s*=.*|password = \"${MMC_WEB_MMC_AGENT_PASSWORD}\"|" /etc/mmc/mmc.ini
 
+  # set mmc root url
+  sed -i -e "s|#*\s*root\s*=.*|root = ${MMC_WEB_ROOT_URL}|" /etc/mmc/mmc.ini
 
   # Config servers
   # delete default server config
