@@ -1,5 +1,5 @@
 NAME = osixia/mmc-web
-VERSION = 0.1.3
+VERSION = 0.1.4
 
 .PHONY: all build test tag_latest release
 
