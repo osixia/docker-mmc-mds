@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.1.5
+  - Disable community warning
+
 ## 0.1.4
   - Upgrade baseimage: web-baseimage:0.1.6
 
