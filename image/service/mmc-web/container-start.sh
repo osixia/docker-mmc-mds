@@ -32,6 +32,13 @@ if [ ! -e "$FIRST_START_DONE" ]; then
   # disable community warning
   sed -i -e "s|#*\s*community\s*=.*|community = no|" /etc/mmc/mmc.ini
 
+  # set maxperpage to 50
+  sed -i -e "s|#*\s*maxperpage\s*=.*|maxperpage = 50|" /etc/mmc/mmc.ini
+
+  # add global keys weakPassword and minsizepassword
+  sed -i '/\[global\]/a weakPassword = 15'  /etc/mmc/mmc.ini
+  sed -i '/\[global\]/a minsizepassword = 5'  /etc/mmc/mmc.ini
+
   # Config servers
   # delete default server config
   sed -i '/.*\[server_01\].*/,$d' /etc/mmc/mmc.ini
