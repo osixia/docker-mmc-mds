@@ -29,6 +29,9 @@ if [ ! -e "$FIRST_START_DONE" ]; then
   # set mmc root url
   sed -i -e "s|#*\s*root\s*=.*|root = ${MMC_WEB_ROOT_URL}|" /etc/mmc/mmc.ini
 
+  # disable community warning
+  sed -i -e "s|#*\s*community\s*=.*|community = no|" /etc/mmc/mmc.ini
+
   # Config servers
   # delete default server config
   sed -i '/.*\[server_01\].*/,$d' /etc/mmc/mmc.ini
