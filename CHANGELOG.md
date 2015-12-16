@@ -2,6 +2,8 @@
 
 ## 1.0.0
   - Upgrade mmc packages
+  - Upgrade baseimage: web-baseimage:0.1.7
+  - Makefile with build no cache
 
 ## 0.1.4
   - Upgrade baseimage: web-baseimage:0.1.6
