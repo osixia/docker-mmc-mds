@@ -13,7 +13,7 @@ if [ ! -e "$FIRST_START_DONE" ]; then
 
     # add CA certificat config if CA cert exists
     if [ -e "/container/service/mmc-web/assets/apache2/certs/$MMC_WEB_HTTPS_CA_CRT_FILENAME" ]; then
-      sed -i "s/#SSLCACertificateFile/SSLCACertificateFile/g" /container/service/mmc-web/assets/apache2/mmc-ssl.conf
+      sed -i --follow-symlinks "s/#SSLCACertificateFile/SSLCACertificateFile/g" /container/service/mmc-web/assets/apache2/mmc-ssl.conf
     fi
 
     a2ensite mmc-ssl
@@ -23,15 +23,25 @@ if [ ! -e "$FIRST_START_DONE" ]; then
   fi
 
   # set mmc-agent login and password
-  sed -i -e "s|#*\s*login\s*=.*|login = \"${MMC_WEB_MMC_AGENT_LOGIN}\"|" /etc/mmc/mmc.ini
-  sed -i -e "s|#*\s*password\s*=.*|password = \"${MMC_WEB_MMC_AGENT_PASSWORD}\"|" /etc/mmc/mmc.ini
+  sed -i --follow-symlinks -e "s|#*\s*login\s*=.*|login = \"${MMC_WEB_MMC_AGENT_LOGIN}\"|" /etc/mmc/mmc.ini
+  sed -i --follow-symlinks -e "s|#*\s*password\s*=.*|password = \"${MMC_WEB_MMC_AGENT_PASSWORD}\"|" /etc/mmc/mmc.ini
 
   # set mmc root url
-  sed -i -e "s|#*\s*root\s*=.*|root = ${MMC_WEB_ROOT_URL}|" /etc/mmc/mmc.ini
+  sed -i --follow-symlinks -e "s|#*\s*root\s*=.*|root = ${MMC_WEB_ROOT_URL}|" /etc/mmc/mmc.ini
+
+  # disable community warning
+  sed -i --follow-symlinks -e "s|#*\s*community\s*=.*|community = no|" /etc/mmc/mmc.ini
+
+  # set maxperpage to 50
+  sed -i --follow-symlinks -e "s|#*\s*maxperpage\s*=.*|maxperpage = 50|" /etc/mmc/mmc.ini
+
+  # add global keys weakPassword and minsizepassword
+  sed -i --follow-symlinks '/\[global\]/a weakPassword = 15'  /etc/mmc/mmc.ini
+  sed -i --follow-symlinks '/\[global\]/a minsizepassword = 5'  /etc/mmc/mmc.ini
 
   # Config servers
   # delete default server config
-  sed -i '/.*\[server_01\].*/,$d' /etc/mmc/mmc.ini
+  sed -i --follow-symlinks '/.*\[server_01\].*/,$d' /etc/mmc/mmc.ini
 
 
   server_config() {

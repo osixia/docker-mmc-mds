@@ -4,7 +4,6 @@
 dpkg -i /container/service/mmc-web/assets/package/mmc-web-base_3.1.1-3_all.deb
 dpkg -i /container/service/mmc-web/assets/package/mmc-web-dashboard_3.1.1-3_all.deb
 dpkg -i /container/service/mmc-web/assets/package/mmc-web-mail_2.5.1-1_all.deb
-dpkg -i /container/service/mmc-web/assets/package/mmc-web-ppolicy_3.1.1-3_all.deb
 dpkg -i /container/service/mmc-web/assets/package/mmc-web-sshlpk_2.5.1-1_all.deb
 
 rm -rf /container/service/mmc-agent/assets/package
@@ -24,4 +23,4 @@ rm -rf /var/www/html
 a2enmod rewrite
 
 # change mmc-web default config
-sed -i -e "s/#*\s*root\s*=.*/root = \//" /etc/mmc/mmc.ini
+sed -i --follow-symlinks -e "s/#*\s*root\s*=.*/root = \//" /etc/mmc/mmc.ini
