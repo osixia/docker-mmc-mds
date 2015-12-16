@@ -23,4 +23,4 @@ rm -rf /var/www/html
 a2enmod rewrite
 
 # change mmc-web default config
-sed -i -e "s/#*\s*root\s*=.*/root = \//" /etc/mmc/mmc.ini
+sed -i --follow-symlinks -e "s/#*\s*root\s*=.*/root = \//" /etc/mmc/mmc.ini
