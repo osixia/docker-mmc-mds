@@ -9,7 +9,7 @@ if [ ! -e "$FIRST_START_DONE" ]; then
   if [ "${MMC_WEB_HTTPS,,}" == "true" ]; then
 
     # check certificat and key or create it
-    /sbin/ssl-helper "/container/service/mmc-web/assets/apache2/certs/$MMC_WEB_HTTPS_CRT_FILENAME" "/container/service/mmc-web/assets/apache2/certs/$MMC_WEB_HTTPS_KEY_FILENAME" --ca-crt=/container/service/mmc-web/assets/apache2/certs/$MMC_WEB_HTTPS_CA_CRT_FILENAME
+    cfssl-helper mmcweb "/container/service/mmc-web/assets/apache2/certs/$MMC_WEB_HTTPS_CRT_FILENAME" "/container/service/mmc-web/assets/apache2/certs/$MMC_WEB_HTTPS_KEY_FILENAME" "/container/service/mmc-web/assets/apache2/certs/$MMC_WEB_HTTPS_CA_CRT_FILENAME"
 
     # add CA certificat config if CA cert exists
     if [ -e "/container/service/mmc-web/assets/apache2/certs/$MMC_WEB_HTTPS_CA_CRT_FILENAME" ]; then
