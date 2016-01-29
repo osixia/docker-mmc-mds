@@ -1,7 +1,7 @@
 # Changelog
 
 ## 1.0.1
-  - Upgrade baseimage: web-baseimage:0.1.8
+  - Upgrade baseimage: web-baseimage:0.1.9
 
 ## 1.0.0
   - Upgrade mmc packages
