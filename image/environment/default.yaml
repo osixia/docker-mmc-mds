@@ -12,6 +12,7 @@ MMC_WEB_ROOT_URL: /mmc-web/
 
 # Apache
 MMC_WEB_SERVER_ADMIN: webmaster@example.org
+MMC_WEB_SERVER_PATH: /mmc-web
 
 # Self signed certificat will be generated
 # if MMC_WEB_HTTPS is set to true and no certificat and key are provided.
