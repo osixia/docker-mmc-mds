@@ -13,8 +13,8 @@ if [ "${MMC_WEB_HTTPS,,}" == "true" ]; then
   log-helper info "Set apache2 https config..."
 
   # generate a certificate and key if files don't exists
-  # https://github.com/osixia/docker-light-baseimage/blob/stable/image/service-available/:cfssl/assets/tool/cfssl-helper
-  cfssl-helper ${MMC_WEB_CFSSL_PREFIX} "${CONTAINER_SERVICE_DIR}/mmc-web/assets/apache2/certs/$MMC_WEB_HTTPS_CRT_FILENAME" "${CONTAINER_SERVICE_DIR}/mmc-web/assets/apache2/certs/$MMC_WEB_HTTPS_KEY_FILENAME" "${CONTAINER_SERVICE_DIR}/mmc-web/assets/apache2/certs/$MMC_WEB_HTTPS_CA_CRT_FILENAME"
+  # https://github.com/osixia/docker-light-baseimage/blob/stable/image/service-available/:ssl-tools/assets/tool/ssl-helper
+  ssl-helper ${MMC_WEB_SSL_HELPER_PREFIX} "${CONTAINER_SERVICE_DIR}/mmc-web/assets/apache2/certs/$MMC_WEB_HTTPS_CRT_FILENAME" "${CONTAINER_SERVICE_DIR}/mmc-web/assets/apache2/certs/$MMC_WEB_HTTPS_KEY_FILENAME" "${CONTAINER_SERVICE_DIR}/mmc-web/assets/apache2/certs/$MMC_WEB_HTTPS_CA_CRT_FILENAME"
 
   # add CA certificat config if CA cert exists
   if [ -e "${CONTAINER_SERVICE_DIR}/mmc-web/assets/apache2/certs/$MMC_WEB_HTTPS_CA_CRT_FILENAME" ]; then
@@ -69,8 +69,8 @@ if [ ! -e "$FIRST_START_DONE" ]; then
 
         if [ "$key" = "localcert" ] && [ ! -e "$value" ]; then
           # generate a certificate and key if files don't exists
-          # https://github.com/osixia/docker-light-baseimage/blob/stable/image/service-available/:cfssl/assets/tool/cfssl-helper
-          cfssl-helper ${MMC_AGENT_CFSSL_PREFIX} "${CONTAINER_SERVICE_DIR}/mmc-agent-client/assets/certs/mmc-agent-client.tmp.crt" "${CONTAINER_SERVICE_DIR}/mmc-agent-client/assets/certs/mmc-agent-client.tmp.key" "${CONTAINER_SERVICE_DIR}/mmc-agent-client/assets/certs/mmc-agent-ca.crt"
+          # https://github.com/osixia/docker-light-baseimage/blob/stable/image/service-available/:ssl-tools/assets/tool/ssl-helper
+          ssl-helper ${MMC_AGENT_SSL_HELPER_PREFIX} "${CONTAINER_SERVICE_DIR}/mmc-agent-client/assets/certs/mmc-agent-client.tmp.crt" "${CONTAINER_SERVICE_DIR}/mmc-agent-client/assets/certs/mmc-agent-client.tmp.key" "${CONTAINER_SERVICE_DIR}/mmc-agent-client/assets/certs/mmc-agent-ca.crt"
 
           # mmc agent need a pem file with the crt and the key
           cat ${CONTAINER_SERVICE_DIR}/mmc-agent-client/assets/certs/mmc-agent-client.tmp.crt ${CONTAINER_SERVICE_DIR}/mmc-agent-client/assets/certs/mmc-agent-client.tmp.key > ${CONTAINER_SERVICE_DIR}/mmc-agent-client/assets/certs/mmc-agent-client.pem

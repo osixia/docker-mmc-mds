@@ -5,15 +5,15 @@ MAINTAINER Bertrand Gouny <bertrand.gouny@osixia.net>
 # Caution: /container/tool/install-service-available arguments order is important
 # php5-fpm install will detect apache2 and configure it
 
-# Add multiple process stack to supervise apache2, php5-fpm and cfssl
+# Add multiple process stack to supervise apache2, php5-fpm and ssl-tools
 # sources: https://github.com/osixia/docker-light-baseimage/blob/stable/image/tool/add-multiple-process-stack
 #          https://github.com/osixia/docker-light-baseimage/blob/stable/image/tool/add-service-available
 #          https://github.com/osixia/docker-web-baseimage/blob/stable/image/service-available/:apache2/download.sh
 #          https://github.com/osixia/docker-web-baseimage/blob/stable/image/service-available/:php5-fpm/download.sh
-#          https://github.com/osixia/docker-web-baseimage/blob/stable/image/service-available/:cfssl/download.sh
+#          https://github.com/osixia/light-baseimage/blob/stable/image/service-available/:ssl-tools/download.sh
 RUN apt-get -y update \
 		&& /container/tool/add-multiple-process-stack \
-		&& /container/tool/add-service-available :apache2 :php5-fpm :cfssl \
+		&& /container/tool/add-service-available :apache2 :php5-fpm :ssl-tools \
 		&& LC_ALL=C DEBIAN_FRONTEND=noninteractive apt-get install -y --force-yes --no-install-recommends \
 			 libapache2-mod-php5 \
 			 php5-gd \
