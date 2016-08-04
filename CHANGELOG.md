@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.3
+  - Upgrade baseimage: web-baseimage:0.1.11
+
 ## 1.0.2
   - Upgrade baseimage: web-baseimage:0.1.10
   - Add MMC_WEB_SERVER_PATH environment variable
