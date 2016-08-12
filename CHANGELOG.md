@@ -2,6 +2,7 @@
 
 ## 1.0.3
   - Upgrade baseimage: web-baseimage:0.1.11
+  - Update mmc packages
 
 ## 1.0.2
   - Upgrade baseimage: web-baseimage:0.1.10
