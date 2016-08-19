@@ -30,6 +30,13 @@ else
   ln -sf ${CONTAINER_SERVICE_DIR}/mmc-web/assets/apache2/http.conf /etc/apache2/sites-available/mmc-web.conf
 fi
 
+#
+# Reverse proxy config
+#
+if [ "${MMC_WEB_TRUST_PROXY_SSL,,}" == "true" ]; then
+  echo 'SetEnvIf X-Forwarded-Proto "^https$" HTTPS=on' > /etc/apache2/mods-enabled/remoteip_ssl.conf
+fi
+
 a2ensite mmc-web | log-helper debug
 
 
@@ -42,7 +49,7 @@ if [ ! -e "$FIRST_START_DONE" ]; then
   sed -i --follow-symlinks -e "s|#*\s*password\s*=.*|password = \"${MMC_WEB_MMC_AGENT_PASSWORD}\"|" /etc/mmc/mmc.ini
 
   # set mmc root url
-  sed -i --follow-symlinks -e "s|#*\s*root\s*=.*|root = ${MMC_WEB_ROOT_URL}|" /etc/mmc/mmc.ini
+  sed -i --follow-symlinks -e "s|#*\s*root\s*=.*|root = ${MMC_WEB_SERVER_PATH}|" /etc/mmc/mmc.ini
 
   # disable community warning
   sed -i --follow-symlinks -e "s|#*\s*community\s*=.*|community = no|" /etc/mmc/mmc.ini
