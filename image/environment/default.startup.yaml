@@ -9,3 +9,5 @@ MMC_WEB_MMC_AGENT_HOSTS:
         - cacert: /container/service/mmc-agent-client/assets/certs/mmc-agent-ca.crt
 
 MMC_AGENT_SSL_HELPER_PREFIX: mmcagent
+
+SSL_HELPER_AUTO_RENEW_SERVICES_IMPACTED: :apache2 :php5-fpm
