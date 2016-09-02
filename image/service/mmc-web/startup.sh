@@ -13,8 +13,8 @@ if [ "${MMC_WEB_HTTPS,,}" == "true" ]; then
   log-helper info "Set apache2 https config..."
 
   # generate a certificate and key if files don't exists
-  # https://github.com/osixia/docker-light-baseimage/blob/stable/image/service-available/:cfssl/assets/tool/cfssl-helper
-  cfssl-helper ${MMC_WEB_CFSSL_PREFIX} "${CONTAINER_SERVICE_DIR}/mmc-web/assets/apache2/certs/$MMC_WEB_HTTPS_CRT_FILENAME" "${CONTAINER_SERVICE_DIR}/mmc-web/assets/apache2/certs/$MMC_WEB_HTTPS_KEY_FILENAME" "${CONTAINER_SERVICE_DIR}/mmc-web/assets/apache2/certs/$MMC_WEB_HTTPS_CA_CRT_FILENAME"
+  # https://github.com/osixia/docker-light-baseimage/blob/stable/image/service-available/:ssl-tools/assets/tool/ssl-helper
+  ssl-helper ${MMC_WEB_SSL_HELPER_PREFIX} "${CONTAINER_SERVICE_DIR}/mmc-web/assets/apache2/certs/$MMC_WEB_HTTPS_CRT_FILENAME" "${CONTAINER_SERVICE_DIR}/mmc-web/assets/apache2/certs/$MMC_WEB_HTTPS_KEY_FILENAME" "${CONTAINER_SERVICE_DIR}/mmc-web/assets/apache2/certs/$MMC_WEB_HTTPS_CA_CRT_FILENAME"
 
   # add CA certificat config if CA cert exists
   if [ -e "${CONTAINER_SERVICE_DIR}/mmc-web/assets/apache2/certs/$MMC_WEB_HTTPS_CA_CRT_FILENAME" ]; then
@@ -30,6 +30,13 @@ else
   ln -sf ${CONTAINER_SERVICE_DIR}/mmc-web/assets/apache2/http.conf /etc/apache2/sites-available/mmc-web.conf
 fi
 
+#
+# Reverse proxy config
+#
+if [ "${MMC_WEB_TRUST_PROXY_SSL,,}" == "true" ]; then
+  echo 'SetEnvIf X-Forwarded-Proto "^https$" HTTPS=on' > /etc/apache2/mods-enabled/remoteip_ssl.conf
+fi
+
 a2ensite mmc-web | log-helper debug
 
 
@@ -42,7 +49,7 @@ if [ ! -e "$FIRST_START_DONE" ]; then
   sed -i --follow-symlinks -e "s|#*\s*password\s*=.*|password = \"${MMC_WEB_MMC_AGENT_PASSWORD}\"|" /etc/mmc/mmc.ini
 
   # set mmc root url
-  sed -i --follow-symlinks -e "s|#*\s*root\s*=.*|root = ${MMC_WEB_ROOT_URL}|" /etc/mmc/mmc.ini
+  sed -i --follow-symlinks -e "s|#*\s*root\s*=.*|root = ${MMC_WEB_SERVER_PATH}|" /etc/mmc/mmc.ini
 
   # disable community warning
   sed -i --follow-symlinks -e "s|#*\s*community\s*=.*|community = no|" /etc/mmc/mmc.ini
@@ -69,8 +76,8 @@ if [ ! -e "$FIRST_START_DONE" ]; then
 
         if [ "$key" = "localcert" ] && [ ! -e "$value" ]; then
           # generate a certificate and key if files don't exists
-          # https://github.com/osixia/docker-light-baseimage/blob/stable/image/service-available/:cfssl/assets/tool/cfssl-helper
-          cfssl-helper ${MMC_AGENT_CFSSL_PREFIX} "${CONTAINER_SERVICE_DIR}/mmc-agent-client/assets/certs/mmc-agent-client.tmp.crt" "${CONTAINER_SERVICE_DIR}/mmc-agent-client/assets/certs/mmc-agent-client.tmp.key" "${CONTAINER_SERVICE_DIR}/mmc-agent-client/assets/certs/mmc-agent-ca.crt"
+          # https://github.com/osixia/docker-light-baseimage/blob/stable/image/service-available/:ssl-tools/assets/tool/ssl-helper
+          ssl-helper ${MMC_AGENT_SSL_HELPER_PREFIX} "${CONTAINER_SERVICE_DIR}/mmc-agent-client/assets/certs/mmc-agent-client.tmp.crt" "${CONTAINER_SERVICE_DIR}/mmc-agent-client/assets/certs/mmc-agent-client.tmp.key" "${CONTAINER_SERVICE_DIR}/mmc-agent-client/assets/certs/mmc-agent-ca.crt"
 
           # mmc agent need a pem file with the crt and the key
           cat ${CONTAINER_SERVICE_DIR}/mmc-agent-client/assets/certs/mmc-agent-client.tmp.crt ${CONTAINER_SERVICE_DIR}/mmc-agent-client/assets/certs/mmc-agent-client.tmp.key > ${CONTAINER_SERVICE_DIR}/mmc-agent-client/assets/certs/mmc-agent-client.pem

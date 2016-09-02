@@ -1,0 +1,13 @@
+MMC_WEB_MMC_AGENT_LOGIN: mmc-ag3nt
+MMC_WEB_MMC_AGENT_PASSWORD: passw0rd
+
+MMC_WEB_MMC_AGENT_HOSTS:
+    - My first mmc-agent: # mandatory
+        - url: https://mmc-agent.example.org:7080 # mandatory
+        - verifypeer: 1
+        - localcert: /container/service/mmc-agent-client/assets/certs/mmc-agent-client.pem
+        - cacert: /container/service/mmc-agent-client/assets/certs/mmc-agent-ca.crt
+
+MMC_AGENT_SSL_HELPER_PREFIX: mmcagent
+
+SSL_HELPER_AUTO_RENEW_SERVICES_IMPACTED: :apache2 :php5-fpm

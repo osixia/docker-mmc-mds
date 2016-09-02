@@ -1,15 +1,3 @@
-MMC_WEB_MMC_AGENT_LOGIN: mmc-ag3nt
-MMC_WEB_MMC_AGENT_PASSWORD: passw0rd
-
-MMC_WEB_MMC_AGENT_HOSTS:
-    - My first mmc-agent: # mandatory
-        - url: https://mmc-agent.example.org:7080 # mandatory
-        - verifypeer: 1
-        - localcert: /container/service/mmc-agent-client/assets/certs/mmc-agent-client.pem
-        - cacert: /container/service/mmc-agent-client/assets/certs/mmc-agent-ca.crt
-
-MMC_WEB_ROOT_URL: /mmc-web/
-
 # Apache
 MMC_WEB_SERVER_ADMIN: webmaster@example.org
 MMC_WEB_SERVER_PATH: /mmc-web
@@ -25,5 +13,6 @@ MMC_WEB_HTTPS_CRT_FILENAME: mmc.crt
 MMC_WEB_HTTPS_KEY_FILENAME: mmc.key
 MMC_WEB_HTTPS_CA_CRT_FILENAME: ca.crt
 
-MMC_WEB_CFSSL_PREFIX: mmcweb
-MMC_AGENT_CFSSL_PREFIX: mmcagent
+MMC_WEB_TRUST_PROXY_SSL: false
+
+MMC_WEB_SSL_HELPER_PREFIX: mmcweb
