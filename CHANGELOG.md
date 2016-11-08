@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.4
+  - Fix root url
+  - Upgrade baseimage: web-baseimage:0.1.12
+
 ## 1.0.3
   - Upgrade baseimage: web-baseimage:0.1.11
   - Update mmc packages

@@ -1,4 +1,4 @@
-docker-mmc-mds
+docker-mmc-web
 ==============
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/osixia/mmc-web.svg)][hub]
