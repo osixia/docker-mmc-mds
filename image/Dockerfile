@@ -1,4 +1,4 @@
-FROM osixia/web-baseimage:0.1.12
+FROM osixia/web-baseimage:1.0.0
 MAINTAINER Bertrand Gouny <bertrand.gouny@osixia.net>
 
 # Install apache2 and php5-fpm using osixia/baseimage install-service-available util
