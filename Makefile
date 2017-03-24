@@ -1,5 +1,5 @@
 NAME = osixia/mmc-web
-VERSION = 1.0.4
+VERSION = 1.0.5
 
 .PHONY: all build build-nocache test tag_latest release
 
