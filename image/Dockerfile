@@ -15,6 +15,7 @@ RUN apt-get -y update \
 		&& /container/tool/add-multiple-process-stack \
 		&& /container/tool/add-service-available :apache2 :php7.0-fpm :ssl-tools \
 		&& LC_ALL=C DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+			 libapache2-mod-php7.0 \
 			 php7.0-gd \
 			 php7.0-xmlrpc \
 			 wwwconfig-common \
