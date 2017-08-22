@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.1.1
+  - Upgrade mmc packages
+
 ## 1.1.0
   - Upgrade mmc packages
   - Upgrade baseimage: web-baseimage:1.1.0 (debian stretch, php7)
