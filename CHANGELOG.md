@@ -2,6 +2,8 @@
 
 ## 1.1.1
   - Upgrade mmc packages
+  - Optimise apache config
+  - Add opcache config
 
 ## 1.1.0
   - Upgrade mmc packages
