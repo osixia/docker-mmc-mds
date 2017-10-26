@@ -4,6 +4,7 @@
   - Upgrade mmc packages
   - Optimise apache config
   - Add opcache config
+  - Upgrade baseimage: web-baseimage:1.1.1
 
 ## 1.1.0
   - Upgrade mmc packages

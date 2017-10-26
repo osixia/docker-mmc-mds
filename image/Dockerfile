@@ -1,4 +1,4 @@
-FROM osixia/web-baseimage:1.1.0
+FROM osixia/web-baseimage:1.1.1
 MAINTAINER Bertrand Gouny <bertrand.gouny@osixia.net>
 
 # Install apache2 and php7.0-fpm using osixia/baseimage install-service-available util
