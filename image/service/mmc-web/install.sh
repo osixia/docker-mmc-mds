@@ -11,12 +11,15 @@ rm -rf /container/service/mmc-agent/assets/package
 cat /container/service/mmc-web/assets/php7.0-fpm/pool.conf >> /etc/php/7.0/fpm/pool.d/www.conf
 rm /container/service/mmc-web/assets/php7.0-fpm/pool.conf
 
+cp -f /container/service/mmc-web/assets/php7.0-fpm/opcache.ini /etc/php/7.0/fpm/conf.d/opcache.ini
+rm /container/service/mmc-web/assets/php7.0-fpm/opcache.ini
+
 # remove apache default host
 a2dissite 000-default
 rm -rf /var/www/html
 
-# enable apache rewrite module
-a2enmod rewrite
+# Add apache modules
+a2enmod rewrite deflate expires
 
 # change mmc-web default config
 sed -i -e "s/#*\s*root\s*=.*/root = \//" /etc/mmc/mmc.ini
