@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.2.0
+### Changed
+  - Upgrade mmc packages
+  - Upgrade baseimage: web-baseimage:1.2.0 (debian buster, php7.3)
+
 ## 1.1.1
   - Upgrade mmc packages
   - Optimise apache config

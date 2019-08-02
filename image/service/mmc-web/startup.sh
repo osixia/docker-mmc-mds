@@ -101,8 +101,6 @@ if [ ! -e "$FIRST_START_DONE" ]; then
   i=1
   for host in $(complex-bash-env iterate MMC_WEB_MMC_AGENT_HOSTS)
   do
-    # section var contain a variable name, we access to the variable value and cast it to a table
-    infos=(${!server})
 
     if [ $(complex-bash-env isRow "${!host}") = true ]; then
 
